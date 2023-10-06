@@ -1,12 +1,12 @@
 class DigisellerAPI:
     def get_products(self):
-        # Получение данных о товарах из Digiseller
+        # TODO: Implement get_products method
         pass
 
     def update_product(self, product):
-        # Обновление информации о продукте в Digiseller
+        # TODO: Implement update_product method
         pass
 
     def check_changes(self):
-        # Проверка изменений в Digiseller
+        # TODO: Implement check_changes method
         pass
