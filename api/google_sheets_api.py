@@ -1,6 +1,4 @@
 import gspread
-from settings import BASE_DIR, SPREADSHEET_URL, CREDENTIALS_PATH, \
-    WORKSHEET_NAME
 
 
 class GoogleSheetsAPI:
