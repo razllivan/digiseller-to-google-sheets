@@ -3,7 +3,6 @@ from api.google_sheets_api import GoogleSheetsAPI
 from data_sync.data_sync import DataSync
 
 
-
 class Main:
     def __init__(self):
         # TODO: Implement __init__ method
