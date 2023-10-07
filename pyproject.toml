@@ -13,6 +13,10 @@ gspread = "~5.11.3"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.4.0"
+flake8-pyproject = "^1.2.3"
+
+[tool.flake8]
+exclude = ["__pycache__", "venv", "settings.py"]
 
 [build-system]
 requires = ["poetry-core"]
