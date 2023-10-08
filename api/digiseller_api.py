@@ -1,4 +1,9 @@
 class DigisellerAPI:
+    def __init__(self):
+        self.base_url = "https://api.digiseller.ru/api/"
+        self.token = None
+        self.token_expiration = None
+
     def get_products(self):
         # TODO: Implement get_products method
         pass
