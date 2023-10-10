@@ -4,6 +4,8 @@ from typing import Any
 
 import requests
 from loguru import logger
+
+from products.products import Product
 from settings import REPEAT_INTERVALS
 from utils.decorators import retry_intervals
 
@@ -103,3 +105,31 @@ class DigisellerAPI:
         if not self.token or time.time() >= self.token_expiration:
             return self.get_token()
         return True
+
+    @staticmethod
+    def _parse_goods(response_data: dict[str, Any]) -> list[Product]:
+        """
+        Parses the response data and returns a list of Goods objects.
+
+        Args:
+            response_data: The response data.
+
+        Returns:
+            list[Product]: The list of Products objects.
+        """
+        digi_status_code = response_data["retval"]
+        if digi_status_code == 0:
+            goods_list = []
+            for item in response_data.get("rows", []):
+                goods = Product(
+                    product_id=item["id_goods"],
+                    name=item["name_goods"],
+                    price=item["price"],
+                    cnt_sell=item["cnt_sell"]
+                )
+                goods_list.append(goods)
+            return goods_list
+        else:
+            desc = response_data.get("retdesc")
+            logger.warning(desc)
+            return []
