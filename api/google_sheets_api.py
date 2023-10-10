@@ -48,7 +48,3 @@ class GoogleSheetsAPI:
         except Exception as e:
             logger.exception(e)
             raise e
-
-    def check_changes(self):
-        # TODO: Implement check_changes method
-        pass
