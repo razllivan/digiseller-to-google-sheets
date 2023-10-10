@@ -1,21 +1,32 @@
+import time
+
 from api.digiseller_api import DigisellerAPI
 from api.google_sheets_api import GoogleSheetsAPI
-from data_sync.data_sync import DataSync
+from products.products import Product
+from settings import (
+    DIGISELLER_API_KEY, DIGISELLER_SELLER_ID,
+    WORKSHEET_NAME, SPREADSHEET_URL,
+    CREDENTIALS_PATH, UPDATE_INTERVAL
+)
 
 
-class Main:
+class DataUpdater:
     def __init__(self):
-        # TODO: Implement __init__ method
-        self.google_sheets_api = GoogleSheetsAPI()
-        self.online_store_api = DigisellerAPI()
-        self.data_sync = DataSync(self.google_sheets_api,
-                                  self.online_store_api)
+        self.google_sheets_api = GoogleSheetsAPI(
+            CREDENTIALS_PATH, SPREADSHEET_URL, WORKSHEET_NAME
+        )
+        self.digiseller_api = DigisellerAPI(
+            DIGISELLER_API_KEY, DIGISELLER_SELLER_ID
+        )
 
-    def run(self):
-        # TODO: Implement run method
+    def run(self) -> None:
         while True:
-            self.data_sync.sync_data()
+            products = self.digiseller_api.get_products()
+            data = Product.to_gs_format(products)
+            self.google_sheets_api.write_data(data)
+            time.sleep(UPDATE_INTERVAL)
 
 
 if __name__ == '__main__':
-    pass
+    main = DataUpdater()
+    main.run()

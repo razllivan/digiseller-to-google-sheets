@@ -7,6 +7,7 @@ from loguru import logger
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 CREDENTIALS_PATH = os.path.join(BASE_DIR, 'service_account.json')
 REPEAT_INTERVALS = [10, 10]
+UPDATE_INTERVAL = 60
 
 # Environment variables
 load_dotenv()
