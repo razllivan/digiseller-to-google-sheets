@@ -1,3 +1,4 @@
+from hashlib import sha256
 import requests
 BASE_URL = "https://api.digiseller.ru/api/"
 
@@ -17,6 +18,18 @@ class DigisellerAPI:
     def get_products(self):
         # TODO: Implement get_products method
         pass
+    def generate_sign(self, timestamp: str) -> str:
+        """
+          Generate a digiseller sign using the API key and timestamp.
+
+          Args:
+              timestamp: The timestamp.
+          Returns:
+              str: The generated sign.
+          """
+        concatenated_string = f"{self.api_key}{timestamp}"
+        byte_array = concatenated_string.encode('utf-8')
+        return sha256(byte_array).hexdigest()
 
     def update_product(self, product):
         # TODO: Implement update_product method
