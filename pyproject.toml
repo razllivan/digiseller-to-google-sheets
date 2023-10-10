@@ -9,6 +9,8 @@ readme = "README.md"
 python = "~3.11"
 requests = "~2.31.0"
 gspread = "~5.11.3"
+python-dotenv = "^1.0.0"
+loguru = "^0.7.2"
 
 
 [tool.poetry.group.dev.dependencies]
