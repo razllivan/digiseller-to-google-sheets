@@ -92,3 +92,14 @@ class DigisellerAPI:
             desc = response_data["desc"]
             logger.warning(desc)
             return False
+
+    def ensure_token_validity(self) -> bool:
+        """
+           Ensure the validity of the token.
+           Returns:
+               bool: True if the token is valid or is successfully refreshed,
+                False otherwise.
+           """
+        if not self.token or time.time() >= self.token_expiration:
+            return self.get_token()
+        return True
