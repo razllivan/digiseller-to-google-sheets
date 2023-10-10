@@ -133,3 +133,48 @@ class DigisellerAPI:
             desc = response_data.get("retdesc")
             logger.warning(desc)
             return []
+
+    def get_products(self, order_col: str = "cntsell", order_dir: str = "desc",
+                     rows: int = 10, page: int = 1, lang: str = "ru-RU",
+                     show_hidden: int = 1,
+                     currency: str = "RUR", ) -> list[Product]:
+        """
+           Retrieves goods from the Digiseller API.
+
+           Args:
+               order_col: The column to order the goods by. Defaults
+                to "cntsell".
+               order_dir: The direction of the ordering. Defaults to "desc".
+               rows: The number of goods to retrieve. Defaults to 10.
+               page: The page number of the goods. Defaults to 1.
+               lang: The language of the goods. Defaults to "ru-RU".
+               show_hidden: The parameter to show hidden goods. Defaults to 1.
+               currency: The currency of the goods. Defaults to "RUR".
+
+
+           Returns:
+               list[Product]: The list of Products objects.
+           """
+        endpoint = "seller-goods"
+        request_data = {
+            "id_seller": self.seller_id,
+            "order_col": order_col,
+            "order_dir": order_dir,
+            "rows": rows,
+            "page": page,
+            "currency": currency,
+            "lang": lang,
+            "show_hidden": show_hidden
+        }
+        if self.ensure_token_validity() is False:
+            return []
+        url = f"{BASE_URL}{endpoint}?token={self.token}"
+
+        response_data = self._send_request(url, request_data)
+        if response_data is not None:
+            goods_list = self._parse_goods(response_data)
+            logger.info('Digiseller products retrieved')
+            return goods_list
+        else:
+            logger.warning('Failed to retrieve Digiseller products')
+            return []
