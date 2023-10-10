@@ -1,3 +1,4 @@
+import time
 from hashlib import sha256
 from typing import Any
 
@@ -7,6 +8,7 @@ from settings import REPEAT_INTERVALS
 from utils.decorators import retry_intervals
 
 BASE_URL = "https://api.digiseller.ru/api/"
+TOKEN_EXPIRATION_TIME = 7200
 
 
 class DigisellerAPI:
@@ -56,3 +58,37 @@ class DigisellerAPI:
                 f'Error occurred while requesting API, '
                 f'request data: {request_data}')
             raise e
+
+    def get_token(self) -> bool:
+        """
+           Retrieves a token from the API server for authentication.
+           Returns:
+               bool: True if the token is successfully retrieved
+               , False otherwise.
+           """
+        endpoint = "apilogin"
+        url = f"{BASE_URL}{endpoint}"
+        timestamp = int(time.time())
+        sign = self.generate_sign(str(timestamp))
+
+        request_data = {
+            "seller_id": self.seller_id,
+            "timestamp": timestamp,
+            "sign": sign
+        }
+
+        response_data = self._send_request(url, request_data)
+        if response_data is None:
+            logger.error('Failed to retrieve token: No response data')
+            return False
+
+        digi_status_code = response_data["retval"]
+        if digi_status_code == 0:
+            self.token = response_data["token"]
+            self.token_expiration = time.time() + TOKEN_EXPIRATION_TIME
+            logger.info('Digiseller token obtained')
+            return True
+        else:
+            desc = response_data["desc"]
+            logger.warning(desc)
+            return False
