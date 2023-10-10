@@ -1,8 +1,8 @@
 import requests
+BASE_URL = "https://api.digiseller.ru/api/"
 
 
 class DigisellerAPI:
-    BASE_URL = "https://api.digiseller.ru/api/"
 
     def __init__(self, api_key: str, seller_id: int):
         if not api_key or not seller_id:
