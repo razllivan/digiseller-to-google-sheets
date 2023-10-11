@@ -15,16 +15,14 @@ ENV PIP_DEFAULT_TIMEOUT=100 \
 
 RUN pip install "poetry==$POETRY_VERSION"
 
-COPY pyproject.toml poetry.lock README.md ./
+COPY pyproject.toml poetry.lock ./
 COPY . .
 RUN poetry config virtualenvs.in-project true && \
-    poetry install --only main --no-root  && \
-    poetry build
+    poetry install --only main --no-root
 
 FROM base as final
 
 COPY --from=builder /app/.venv ./.venv
-COPY --from=builder /app/dist .
+COPY --from=builder /app .
 
-RUN ./.venv/bin/pip install *.whl
 CMD ["./.venv/bin/python", "main.py"]
