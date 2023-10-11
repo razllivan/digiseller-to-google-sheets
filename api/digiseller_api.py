@@ -34,6 +34,9 @@ class DigisellerAPI:
           Returns:
               str: The generated sign.
           """
+        if not timestamp:
+            raise ValueError("Timestamp is required")
+
         concatenated_string = f"{self.api_key}{timestamp}"
         byte_array = concatenated_string.encode('utf-8')
         return sha256(byte_array).hexdigest()
