@@ -1,4 +1,5 @@
 import unittest
+from hashlib import sha256
 
 from api.digiseller_api import DigisellerAPI
 
@@ -26,6 +27,18 @@ class DigisellerAPITest(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             DigisellerAPI("", None)  # noqa
+
+    def test_generate_sign(self):
+        timestamp = "2022-01-01T00:00:00Z"
+        expected_sign = sha256(
+            f"{self.api_key}{timestamp}".encode('utf-8')).hexdigest()
+        generated_sign = self.digiseller_api.generate_sign(timestamp)
+        self.assertEqual(generated_sign, expected_sign)
+
+    def test_generate_sign_with_empty_timestamp(self):
+        timestamp = ""
+        with self.assertRaises(ValueError):
+            self.digiseller_api.generate_sign(timestamp)
 
 
 if __name__ == '__main__':
