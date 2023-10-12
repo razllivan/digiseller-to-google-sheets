@@ -1,6 +1,10 @@
+import time
+
 import gspread
-from settings import BASE_DIR, SPREADSHEET_URL, CREDENTIALS_PATH, \
-    WORKSHEET_NAME
+from loguru import logger
+
+from settings import REPEAT_INTERVALS
+from utils.decorators import retry_intervals
 
 
 class GoogleSheetsAPI:
@@ -29,6 +33,7 @@ class GoogleSheetsAPI:
 
         return self.worksheet.get_values()
 
+    @retry_intervals(*REPEAT_INTERVALS)
     def write_data(self, data: list[list[str]]):
         """
         Write the given data to the worksheet.
@@ -39,8 +44,11 @@ class GoogleSheetsAPI:
         Returns:
             None
         """
-        self.worksheet.update(data)
-
-    def check_changes(self):
-        # TODO: Implement check_changes method
-        pass
+        try:
+            self.worksheet.update('A1',
+                                  time.strftime("%H:%M", time.localtime()))
+            self.worksheet.update('A3', data)
+            logger.success('Data updated successfully')
+        except Exception as e:
+            logger.exception(e)
+            raise e

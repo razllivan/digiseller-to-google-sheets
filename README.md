@@ -35,22 +35,16 @@
 <details>
 <summary>Настройки проекта</summary>
 
-Перед началом использования необходимо указать необходимые данные в файле settings.py
+Переименуйте файл sample.env в .env и заполните его своими данными
 
 * SPREADSHEET_URL - Ссылка на таблицу(Настройки доступа > Копировать)
 * WORKSHEET_NAME - Имя листа с которым будем работать
+* DIGISELLER_API_KEY - API ключ, получение через кабинет Digi, присылают на WebMoney
+* DIGISELLER_SELLER_ID - Идентификатор продавца (Личный кабинет > Детали > Контактные данные)
 
 
 </details>
 
-<details>
-<summary>Примеры использования</summary>
+Для запуска должен быть установлен docker
 
-```python
-table = GoogleSheetsAPI(CREDENTIALS_PATH, SPREADSHEET_URL, WORKSHEET_NAME)
-data = [['data1', 'data2'], ['data3', 'data4']]
-table.write_data(data)
-```
-
-
-</details>
+Из папки с проектом запустить команду `docker compose up` или `docker-compose up`

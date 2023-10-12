@@ -1,0 +1,11 @@
+version: '3'
+services:
+  digiseller-google-sync:
+    build:
+      context: .
+    volumes:
+      - type: bind
+        source: ./logs
+        target: /app/logs
+    environment:
+      - TZ=Europe/Moscow
