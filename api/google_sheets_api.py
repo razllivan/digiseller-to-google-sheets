@@ -1,3 +1,5 @@
+import time
+
 import gspread
 from loguru import logger
 
@@ -43,6 +45,8 @@ class GoogleSheetsAPI:
             None
         """
         try:
+            self.worksheet.update('A1',
+                                  time.strftime("%H:%M", time.localtime()))
             self.worksheet.update('A3', data)
             logger.success('Data updated successfully')
         except Exception as e:
