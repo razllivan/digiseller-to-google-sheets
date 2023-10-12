@@ -45,14 +45,6 @@
 
 </details>
 
-<details>
-<summary>Примеры использования</summary>
+Для запуска должен быть установлен docker
 
-```python
-table = GoogleSheetsAPI(CREDENTIALS_PATH, SPREADSHEET_URL, WORKSHEET_NAME)
-data = [['data1', 'data2'], ['data3', 'data4']]
-table.write_data(data)
-```
-
-
-</details>
+Из папки с проектом запустить команду `docker compose up` или `docker-compose up`
