@@ -3,7 +3,7 @@ import time
 import gspread
 from loguru import logger
 
-from settings import REPEAT_INTERVALS
+from settings import REPEAT_INTERVALS, PRODUCT_TABLE_ROWS_TO_EXCLUDE
 from utils.decorators import retry_intervals
 
 
@@ -52,3 +52,23 @@ class GoogleSheetsAPI:
         except Exception as e:
             logger.exception(e)
             raise e
+
+    def cleanup_extra_data(self, new_products: list[list[str]]):
+        """
+        Clears the extra data in the worksheet by removing rows of products
+         that exceed the number of new products.
+
+        Args:
+            new_products (list[list[str]]): A list of lists of strings
+             representing new products.
+
+        Returns:
+            None
+            """
+        old_products = self.read_data()[PRODUCT_TABLE_ROWS_TO_EXCLUDE:]
+
+        start_row = len(new_products) + PRODUCT_TABLE_ROWS_TO_EXCLUDE + 1
+        end_row = len(old_products) + PRODUCT_TABLE_ROWS_TO_EXCLUDE
+        if start_row <= end_row:
+            range_to_clear = f"{start_row}:{end_row}"
+            self.worksheet.batch_clear([range_to_clear])
