@@ -1,4 +1,6 @@
 import unittest
+from random import randint, choice
+from string import ascii_letters
 from unittest.mock import MagicMock, patch
 
 from api.google_sheets_api import GoogleSheetsAPI
@@ -74,6 +76,34 @@ class GoogleSheetsAPITest(unittest.TestCase):
                                    ],
                 'expected_clear_range': expected_clear_range,
                 'should_call_bath_clear': should_call_bath_clear}
+
+
+def generate_and_write_test_data(credentials_path: str, spreadsheet_url: str,
+                                 worksheet_name: str, products_count: int):
+    """
+    Generates test data and writes it to a Google Sheet.
+
+    Args:
+        credentials_path (str): The path to the credentials file for accessing
+         the Google Sheets API.
+        spreadsheet_url (str): The URL of the Google Sheet where the data will
+        be written.
+        worksheet_name (str): The name of the worksheet in spreadsheet
+        products_count (int): The number of test data products to generate.
+
+    Returns:
+        None
+    """
+    test_data = []
+    for _ in range(products_count):
+        product_id = randint(1, 100000)
+        name = ''.join(choice(ascii_letters) for _ in range(10))
+        price = randint(50, 5000)
+        sales = randint(0, 5000)
+        test_data.append([product_id, name, price, sales])
+    api = GoogleSheetsAPI(credentials_path, spreadsheet_url, worksheet_name)
+    api.cleanup_extra_data(test_data)
+    api.write_data(test_data)
 
 
 if __name__ == '__main__':
