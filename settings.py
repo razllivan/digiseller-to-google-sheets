@@ -29,4 +29,4 @@ def level_filter(levels):
 logger.remove(0)
 
 logger.add(sys.stderr, level="SUCCESS", filter=level_filter("ERROR"))
-logger.add("logs/app.log", rotation="7 days")
+logger.add(f"{BASE_DIR}/logs/app.log", rotation="7 days")
