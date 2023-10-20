@@ -23,6 +23,7 @@ class DataUpdater:
         while True:
             products = self.digiseller_api.get_products()
             data = Product.to_gs_format(products)
+            self.google_sheets_api.cleanup_extra_data(data)
             self.google_sheets_api.write_data(data)
             time.sleep(UPDATE_INTERVAL)
 

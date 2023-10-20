@@ -8,6 +8,7 @@ BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 CREDENTIALS_PATH = os.path.join(BASE_DIR, 'service_account.json')
 REPEAT_INTERVALS = [60, 60, 60, 300, 300, 300, 1800, 1800, 1800]
 UPDATE_INTERVAL = 60
+PRODUCT_TABLE_ROWS_TO_EXCLUDE = 2
 
 # Environment variables
 load_dotenv()
@@ -28,4 +29,4 @@ def level_filter(levels):
 logger.remove(0)
 
 logger.add(sys.stderr, level="SUCCESS", filter=level_filter("ERROR"))
-logger.add("logs/app.log", rotation="7 days")
+logger.add(f"{BASE_DIR}/logs/app.log", rotation="7 days")
