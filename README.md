@@ -79,7 +79,7 @@ cd digiseller-to-google-sheets
 cp sample.env .env
 ```
 
-3. Edit .envs/.local/.env file and update it with your details:
+3. Edit .env file and update it with your details:
 
 - `SPREADSHEET_URL`: The URL of the Google Sheets where data will be synced to. You can find this URL in the Sheets settings under 'Access settings > Copy'.
 - `WORKSHEET_NAME`: The name of the worksheet within the Google Sheets that you'll be working with.
